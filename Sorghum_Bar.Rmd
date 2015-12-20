@@ -1,0 +1,86 @@
+Bar Plots
+========================================================
+TODO
+=======
+* figure out how to make error bars
+* download CG and CHH files for anova from rolf
+* run on CG and CHH
+* make error bars
+
+CHG data
+============
+
+
+
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/anova/ALL_CHG_meth.txt"
+x = read.table(file_name, col.names=c("freq","ctype","mtype"), sep="\t", header= FALSE)
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+x$ctype <- factor(x$ctype, levels = c("CDs", "3 promoter","5 promoter","miRNA", "TE","tandem duplicates")) 
+
+mRNA = x[x$ctype == "miRNA",]
+cds = x[x$ctype == "CDs",]
+te = x[x$ctype == "TE",]
+td = x[x$ctype == "tandem duplicates",]
+five = x[x$ctype == "5 promoter",]
+three = x[x$ctype == "3 promoter",]
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+
+```
+
+```{r fig.width=10, fig.height=5}
+
+library(ggplot2)
+library(grid)
+
+data_summary <- function(data, varname, groupnames){
+  require(plyr)
+  summary_func <- function(x, col){
+    c(mean = mean(x[[col]], na.rm=FALSE),
+      sd = sd(x[[col]], na.rm=FALSE))
+  }
+  data_sum<-ddply(data, groupnames, .fun=summary_func,
+                  varname)
+  data_sum <- rename(data_sum, c("mean" = varname))
+  return(data_sum)
+}
+
+
+df <- data_summary(x, varname="freq",groupnames=c("mtype","ctype"))
+
+ggplot(data=df, aes(x = ctype, y = freq,group=mtype, fill = mtype)) +  
+  geom_bar(stat = "identity",position = "dodge")  + 
+  scale_fill_manual(values=c("#e1131e","#3c4a96","#009987","#71b436")) + 
+  geom_errorbar(aes(ymin=freq-sd, ymax=freq +sd), width=.2,  position=position_dodge(.9))  + theme_classic() + theme(text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("")
+
+
+
+
+```
+
+
+test
+```{r}
+library(PMCMR)
+kruskal.test(freq ~ mtype, data=cds)
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=cds, dist="Tukey")
+
+kruskal.test(freq ~ mtype, data=te)
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=te, dist="Tukey")
+
+kruskal.test(freq ~ mtype, data=td)
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=td, dist="Tukey")
+
+kruskal.test(freq ~ mtype, data=mRNA)
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=mRNA, dist="Tukey")
+
+kruskal.test(freq ~ mtype, data=five)
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=five, dist="Tukey")
+
+kruskal.test(freq ~ mtype, data=three)
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=three, dist="Tukey")
+
+
+```
+
