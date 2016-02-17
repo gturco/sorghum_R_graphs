@@ -60,8 +60,10 @@ ggplot(data=x,
 
 ```{r}
 library(PMCMR)
+attach(x)
 kruskal.test(freq ~ mtype, data = x) 
-posthoc.kruskal.nemenyi.test(freq ~ mtype, data=x, dist="Tukey")
+genebody = x[which(pos > 0 & pos < 1000),]
+posthoc.kruskal.nemenyi.test(freq ~ mtype, data=genebody, dist="Tukey")
 
 ```
 

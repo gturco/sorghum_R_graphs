@@ -1,9 +1,7 @@
 ROOT
 ========================================================
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **MD** toolbar button for help on Markdown).
-
-When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+TODO:
 
 Root CHG 
 ============
@@ -15,7 +13,8 @@ file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.root.filtered.CH
 x = read.table(file_name, col.names=c("pos","freq","mtype"))
 x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
 ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
-  theme_classic() + theme(text=element_text(size=20))    +  theme(text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#F97976","#F82F2B","#B92320","#783A39"))
+  theme_classic() + theme(text=element_text(size=20))    +  theme(text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + 
+scale_color_manual(values = c("#b9d2e2","#6aacd4","#4e91a5","#1d66a3"))
 ```
 
 
@@ -107,4 +106,3 @@ ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom
 library(PMCMR)
 kruskal.test(freq ~ mtype, data = x) 
 posthoc.kruskal.nemenyi.test(freq ~ mtype, data=x, dist="Tukey")
-```
