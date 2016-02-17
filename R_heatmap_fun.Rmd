@@ -1,0 +1,201 @@
+
+Code!
+===========================================
+```{r}
+library(reshape)
+library(ggplot2)
+library(PMCMR)
+
+
+genebody_pval = function(file_name)
+{
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+  
+  genebody = x[which(x$pos >= 0 & x$pos <= 1000),]
+  d = kruskal.test(freq ~ mtype, data = genebody) 
+  
+  c <- posthoc.kruskal.nemenyi.test(freq ~ mtype, data=genebody, dist="Tukey")
+  y <- data.frame(c$p.value)
+  ttype  <- c("shoot","vascular","nonvascular","shoot","vascular","nonvascular","shoot","vascular","nonvascular")
+  
+  z <- cbind.data.frame(melt(y),ttype)
+  z$pval <- cut(z$value, breaks = c(0, 0.0001, 0.001, 0.01, 1))
+  z$ttype <- factor(z$ttype, levels = c("nonvascular","","vascular","shoot"))
+  ggplot(z, aes(variable, ttype, fill = pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(0,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+}
+
+```
+
+
+```{r}
+upstream_pval = function(file_name)
+{
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+  up = x[which(x$pos < 0),]
+  d = kruskal.test(freq ~ mtype, data = up) 
+  
+  c <- posthoc.kruskal.nemenyi.test(freq ~ mtype, data=up, dist="Tukey")
+  y <- data.frame(c$p.value)
+  ttype  <- c("shoot","vascular","nonvascular","shoot","vascular","nonvascular","shoot","vascular","nonvascular")
+  
+  z <- cbind.data.frame(melt(y),ttype)
+  z$pval <- cut(z$value, breaks = c(0, 0.0001, 0.001, 0.01, 1))
+  z$ttype <- factor(z$ttype, levels = c("nonvascular","","vascular","shoot"))
+  ggplot(z, aes(variable, ttype, fill = pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(0,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+}
+
+```
+
+
+```{r}
+downstream_pval = function(file_name)
+{
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+  
+  down = x[which(x$pos > 1000),]
+  d = kruskal.test(freq ~ mtype, data = down) 
+  
+  c <- posthoc.kruskal.nemenyi.test(freq ~ mtype, data=down, dist="Tukey")
+  y <- data.frame(c$p.value)
+  ttype  <- c("shoot","vascular","nonvascular","shoot","vascular","nonvascular","shoot","vascular","nonvascular")
+  
+  z <- cbind.data.frame(melt(y),ttype)
+  z$pval <- cut(z$value, breaks = c(0, 0.0001, 0.001, 0.01, 1))
+  z$ttype <- factor(z$ttype, levels = c("nonvascular","","vascular","shoot"))
+  ggplot(z, aes(variable, ttype, fill = z$pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(0,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+}
+
+```
+
+```{r}
+regional_pval = function(file_name)
+{
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+  
+  down = x[which(x$pos > 1000),]
+  up =  x[which(x$pos < 0),]
+  genebody = x[which(x$pos >= 0 & x$pos <= 1000),]
+  
+  d = kruskal.test(freq ~ mtype, data = up) 
+  u = kruskal.test(freq ~ mtype, data = down) 
+  g = kruskal.test(freq ~ mtype, data = genebody) 
+  l <- cbind(d$p.value,g$p.value,u$p.value)
+  colnames(l) <- c("upstream","genebody","downstream")
+  rownames(l) <- c("t")
+  y <- data.frame(l) 
+  a <- c("all")
+  z <- cbind.data.frame(melt(y),a)
+  z$pval <- cut(z$value, breaks = c(0, 0.0001, 0.001, 0.01, 1))
+  ggplot(z, aes(variable, a, fill = z$pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(0,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+}
+```
+
+
+CHH 4
+==================
+```{r fig.width=7, fig.height=5}
+file_name = "/Users/gturco/Documents/Data/Sorg/11_25_2015/dist_data/TSS_cs_plots/Tissue/CHH/CHH_4.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+ggplot(data=x, 
+       aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% Methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8"))
+
+
+
+```{r fig.width=7, fig.height=2}
+regional_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+upstream_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+downstream_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+genebody_pval(file_name)
+```
+
+CHG 4
+==================
+```{r fig.width=7, fig.height=5}
+file_name = "/Users/gturco/Documents/Data/Sorg/11_25_2015/dist_data/TSS_cs_plots/Tissue/CHG/CHG_4.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+ggplot(data=x, 
+       aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% Methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8"))
+
+
+
+```{r fig.width=7, fig.height=2}
+regional_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+upstream_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+downstream_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+genebody_pval(file_name)
+```
+
+CHH 4
+==================
+```{r fig.width=7, fig.height=5}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_1.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+ggplot(data=x, 
+       aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% Methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8"))
+
+
+
+```{r fig.width=7, fig.height=2}
+regional_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+upstream_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+downstream_pval(file_name)
+```
+
+```{r fig.width=7, fig.height=5}
+genebody_pval(file_name)
+```
+
