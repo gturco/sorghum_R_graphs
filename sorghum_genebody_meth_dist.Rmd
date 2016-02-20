@@ -1,0 +1,89 @@
+distributions
+========================================================
+
+
+```{r fig.width=16, fig.height=16}
+library("gridExtra")
+library("ggplot2")
+file_name = "/Users/gturco/Documents/tmp/RPKM_TOS_All.tsv"
+x = read.table(file_name, header=TRUE, sep="\t")
+
+n <- ggplot(x, aes(ncgmean, colour=tissue)) + geom_freqpoly() + ggtitle("Nonvascular all")
+v <- ggplot(x, aes(vcgmean, colour=tissue)) + geom_freqpoly() + ggtitle("Vascular all")
+s <- ggplot(x, aes(scgmean, colour=tissue)) + geom_freqpoly() + ggtitle("Shoot all")
+r <- ggplot(x, aes(rcgmean, colour=tissue)) + geom_freqpoly() + ggtitle("Root all")
+
+grid.arrange(n, v,s,r, ncol=2)
+
+```
+
+```{r fig.width=7, fig.height=6}
+y = cbind.data.frame(x$ncgmean,x$vcgmean,x$scgmean,x$rcgmean)
+colnames(y) <- c("non","vas","shoot","root")
+
+library("reshape")
+ty <- melt(y)
+
+ggplot(ty, aes(value, colour=variable)) + geom_freqpoly()
+
+```
+
+```{r fig.width=16, fig.height=16}
+z = x[which(x$tissue == "constitutive high"),]
+y = cbind.data.frame(z$ncgmean,z$vcgmean,z$scgmean,z$rcgmean)
+colnames(y) <- c("non","vas","shoot","root")
+
+library("reshape")
+high <- melt(y)
+
+z = x[which(x$tissue == "constitutive low"),]
+y = cbind.data.frame(z$ncgmean,z$vcgmean,z$scgmean,z$rcgmean) 
+colnames(y) <- c("non","vas","shoot","root")
+low <- melt(y)
+
+z = x[which(x$tissue == "organ low, tissue high"),]
+y = cbind.data.frame(z$ncgmean,z$vcgmean,z$scgmean,z$rcgmean)
+colnames(y) <- c("non","vas","shoot","root")
+thigh <- melt(y)
+
+z = x[which(x$tissue == "organ high, tissue low"),]
+y = cbind.data.frame(z$ncgmean,z$vcgmean,z$scgmean,z$rcgmean)
+colnames(y) <- c("non","vas","shoot","root")
+ohigh <- melt(y)
+
+averge_meth_low <- ggplot(low, aes(value, colour=variable)) + geom_freqpoly() + ggtitle("constitutive low")
+averge_meth_high <- ggplot(high, aes(value, colour=variable)) + geom_freqpoly() + ggtitle("constitutive high")
+averge_meth_ohigh <- ggplot(ohigh, aes(value, colour=variable)) + geom_freqpoly() + ggtitle(" organ high, tissue low")
+averge_meth_thigh <- ggplot(thigh, aes(value, colour=variable)) + geom_freqpoly() + ggtitle("tissue high, organ low")
+
+grid.arrange(averge_meth_low,averge_meth_high,averge_meth_ohigh,averge_meth_thigh, ncol=2)
+
+
+```
+
+Genes that are the same
+======================
+
+```{r fig.width=7, fig.height=6}
+library(ggplot2)
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_same.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+ggplot(data=x, 
+       aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% Methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8"))
+
+##Overall values of methylations shared for root, shoot, vas, nonvas
+##1.7127397542925805E8  1.732745471982939E8  1.433140510714947E8	1.2152490114961252E8
+```  
+
+```{r fig.width=7, fig.height=6}
+library(ggplot2)
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_same4.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("Root","Shoot","Vascular","Nonvascular"))
+ggplot(data=x, 
+       aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% Methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8"))
+
+```  
