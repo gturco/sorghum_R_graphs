@@ -1,0 +1,444 @@
+Title
+========================================================
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring web pages (click the **MD** toolbar button for help on Markdown).
+
+When you click the **Knit HTML** button a web page will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+```{r}
+#### shoot, root, vas, non
+library(PMCMR)
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.shoot.CG.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+
+a= ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#F97976","#F82F2B","#B92320","#783A39"))
+
+
+a1= upstream_pval(file_name)
+a2= genebody_pval(file_name)
+a3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.root.CG.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+
+b= ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#F97976","#F82F2B","#B92320","#783A39"))
+
+b1= upstream_pval(file_name)
+b2= genebody_pval(file_name)
+b3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.nonvascular.CG.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+c= ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#F97976","#F82F2B","#B92320","#783A39"))
+
+
+c1= upstream_pval(file_name)
+c2= genebody_pval(file_name)
+c3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.vascular.CpG.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+d = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#F97976","#F82F2B","#B92320","#783A39"))
+
+
+d1= upstream_pval(file_name)
+d2= genebody_pval(file_name)
+d3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.shoot.filtered.CHG.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+e = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#b9d2e2","#6aacd4","#4e91a5","#1d66a3"))
+
+
+e1= upstream_pval(file_name)
+e2= genebody_pval(file_name)
+e3= downstream_pval(file_name)
+
+
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/new/new_CHG/rpkm/all.root.filtered.CHG.txt"384
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+f = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#b9d2e2","#6aacd4","#4e91a5","#1d66a3"))
+
+
+
+f1= upstream_pval(file_name)
+f2= genebody_pval(file_name)
+f3= downstream_pval(file_name)
+
+
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.nonvascular.filtered.CHG.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+g = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#b9d2e2","#6aacd4","#4e91a5","#1d66a3"))
+
+
+g1= upstream_pval(file_name)
+g2= genebody_pval(file_name)
+g3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.vascular.CHG.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+h = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#b9d2e2","#6aacd4","#4e91a5","#1d66a3"))
+
+h1= upstream_pval(file_name)
+h2= genebody_pval(file_name)
+h3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.shoot.CHH.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+i=ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#53CA77","#15C048","#0E8130","#1A4026"))
+
+
+i1= upstream_pval(file_name)
+i2= genebody_pval(file_name)
+i3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.root.CHH.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+j=ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#53CA77","#15C048","#0E8130","#1A4026"))
+
+j1= upstream_pval(file_name)
+j2= genebody_pval(file_name)
+j3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.nonvascular.filtered.CHH.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+k=ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#53CA77","#15C048","#0E8130","#1A4026"))
+
+k1= upstream_pval(file_name)
+k2= genebody_pval(file_name)
+k3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.vascular.CHH.filtered.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
+l=ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_color_manual(values = c("#53CA77","#15C048","#0E8130","#1A4026"))
+
+
+l1= upstream_pval(file_name)
+l2= genebody_pval(file_name)
+l3= downstream_pval(file_name)
+
+
+```
+
+
+
+```{r}
+#### shoot, root, vas, non
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_1.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+a = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% Methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(14,84)
+
+a1= upstream_pval(file_name)
+a2= genebody_pval(file_name)
+a3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_2.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+b = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(14,84)
+
+b1= upstream_pval(file_name)
+b2= genebody_pval(file_name)
+b3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_3.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+c = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(14,84)
+
+c1= upstream_pval(file_name)
+c2= genebody_pval(file_name)
+c3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_4.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+d = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(14,84)
+
+d1= upstream_pval(file_name)
+d2= genebody_pval(file_name)
+d3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_1.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+e = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,35)
+
+e1= upstream_pval(file_name)
+e2= genebody_pval(file_name)
+e3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_2.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+f = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("")+ scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,35)
+
+
+f1= upstream_pval(file_name)
+f2= genebody_pval(file_name)
+f3= downstream_pval(file_name)
+
+
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_3.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+g = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,35)
+
+g1= upstream_pval(file_name)
+g2= genebody_pval(file_name)
+g3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_4.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+h = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,35)
+
+h1= upstream_pval(file_name)
+h2= genebody_pval(file_name)
+h3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_1.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+i = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("% methylation") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,21)
+
+
+i1= upstream_pval(file_name)
+i2= genebody_pval(file_name)
+i3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_2.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+j= ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,21)
+
+j1= upstream_pval(file_name)
+j2= genebody_pval(file_name)
+j3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_3.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+k = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,21)
+
+k1= upstream_pval(file_name)
+k2= genebody_pval(file_name)
+k3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_4.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+l = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) + ylim(5,21)
+
+l1= upstream_pval(file_name)
+l2= genebody_pval(file_name)
+l3= downstream_pval(file_name)
+
+
+```
+
+
+
+
+
+
+```{r}
+library(cowplot)
+
+pdf("Fig5gridupdate.pdf", width=6.8136, height=10.85568, onefile=FALSE)
+ggdraw() +
+  ###x,y,w,h
+  draw_plot(a, 0, 0.068, 0.323, 0.125) +
+  draw_plot(a1, .033, 0, .098, 0.057) +
+  draw_plot(a2, 0.132, 0, .098, 0.057)  +
+  draw_plot(a3, 0.231, 0, .098, 0.057) +
+  #C
+  draw_plot(a, 0, 0.261, 0.323, 0.125) +
+  draw_plot(a1, .033, 0.193, .098, 0.057) +
+  draw_plot(a2, 0.132, 0.193, .098, 0.057)  +
+  draw_plot(a3, 0.231, 0.193, .098, 0.057) +
+  #B
+  draw_plot(a, 0, 0.454, 0.323, 0.125) +
+  draw_plot(a1, .033, 0.386, .098, 0.057) +
+  draw_plot(a2, 0.132, 0.386, .098, 0.057)  +
+  draw_plot(a3, 0.231, 0.386, .098, 0.057) +
+  #A
+    draw_plot(a, 0, 0.647, 0.323, 0.125) +
+  draw_plot(a1, .033, 0.579, .098, 0.057) +
+  draw_plot(a2, 0.132, 0.579, .098, 0.057)  +
+  draw_plot(a3, 0.231, 0.579, .098, 0.057)
+
+dev.off()
+
+
+
+##### PERFECT FIGURE HORIZONTAL
+pdf("ultimateFIgure6.pdf", width=6.8136, height=10.85568, onefile=FALSE)
+ggdraw() +
+  ###x(w),y(h),w,h
+  #### VERTICAL 1
+  # D
+  draw_plot(d, 0, 0.068, 0.323, 0.125) +
+  draw_plot(d1, .033, 0, .098, 0.057) +
+  draw_plot(d2, 0.132, 0, .098, 0.057)  +
+  draw_plot(d3, 0.231, 0, .098, 0.057) +
+  #C
+  draw_plot(c, 0, 0.261, 0.323, 0.125) +
+  draw_plot(c1, .033, 0.193, .098, 0.057) +
+  draw_plot(c2, 0.132, 0.193, .098, 0.057)  +
+  draw_plot(c3, 0.231, 0.193, .098, 0.057) +
+  #B
+  draw_plot(b, 0, 0.454, 0.323, 0.125) +
+  draw_plot(b1, .033, 0.386, .098, 0.057) +
+  draw_plot(b2, 0.132, 0.386, .098, 0.057)  +
+  draw_plot(b3, 0.231, 0.386, .098, 0.057) +
+  #A
+    draw_plot(a, 0, 0.647, 0.323, 0.125) +
+  draw_plot(a1, .033, 0.579, .098, 0.057) +
+  draw_plot(a2, 0.132, 0.579, .098, 0.057)  +
+  draw_plot(a3, 0.231, 0.579, .098, 0.057) +
+
+ #### VERTICAL 2
+  #H
+  draw_plot(h, 0.329, 0.068, 0.33, 0.125) +
+  draw_plot(h1, .362, 0, .098, 0.057) +
+  draw_plot(h2, 0.46, 0, .098, 0.057)  +
+  draw_plot(h3, 0.558, 0, .098, 0.057) +
+  #G
+  draw_plot(g, 0.329, 0.261, 0.323, 0.125) +
+  draw_plot(g1, .362, 0.193, .098, 0.057) +
+  draw_plot(g2, 0.46, 0.193, .098, 0.057)  +
+  draw_plot(g3, 0.558, 0.193, .098, 0.057) +
+  #F
+  draw_plot(f, 0.329, 0.454, 0.323, 0.125) +
+  draw_plot(f1, .362, 0.386, .098, 0.057) +
+  draw_plot(f2, 0.46, 0.386, .098, 0.057)  +
+  draw_plot(f3, 0.558, 0.386, .098, 0.057) +
+  #E
+  draw_plot(e, 0.329, 0.647, 0.323, 0.125) +
+  draw_plot(e1, .362, 0.579, .098, 0.057) +
+  draw_plot(e2, 0.46, 0.579, .098, 0.057)  +
+  draw_plot(e3, 0.558, 0.579, .098, 0.057) +
+
+ #### VERTICAL 3
+  #L
+  draw_plot(l, 0.656, 0.068, 0.33, 0.125) +
+  draw_plot(l1, 0.689, 0, .098, 0.057) +
+  draw_plot(l2, 0.787, 0, .098, 0.057)  +
+  draw_plot(l3, 0.885, 0, .098, 0.057) +
+  #K
+  draw_plot(k, 0.656, 0.261, 0.323, 0.125) +
+  draw_plot(k1, .689, 0.193, .098, 0.057) +
+  draw_plot(k2, 0.787, 0.193, .098, 0.057)  +
+  draw_plot(k3, 0.885, 0.193, .098, 0.057) +
+  #J
+  draw_plot(j, 0.656, 0.454, 0.323, 0.125) +
+  draw_plot(j1, .689, 0.386, .098, 0.057) +
+  draw_plot(j2, 0.787, 0.386, .098, 0.057)  +
+  draw_plot(j3, 0.885, 0.386, .098, 0.057) +
+  #I
+  draw_plot(i, 0.656, 0.647, 0.323, 0.125) +
+  draw_plot(i1, .689, 0.579, .098, 0.057) +
+  draw_plot(i2, 0.787, 0.579, .098, 0.057)  +
+  draw_plot(i3, 0.885, 0.579, .098, 0.057) 
+
+
+
+dev.off()
+
+
+
+##### PERFECT FIGURE HORIZONTAL
+pdf("Fig5gridupdate.pdf", width=6.68, height=7.8284, onefile=FALSE)
+ggdraw() +
+  ###x,y,w,h
+  draw_plot(d, 0, 0.04, 0.33, 0.22) +
+  draw_plot(c, .04, 0, 0.1, 0.04) +
+  draw_plot(b, 0.14, 0, 0.1, 0.04)  +
+  draw_plot(a, 0.24, 0, 0.1, 0.04) +
+  
+   draw_plot(d, 0, 0.30, 0.33, 0.22) +
+  draw_plot(c, .04, 0.26, 0.1, 0.04) +
+  draw_plot(b, 0.14, 0.26, 0.1, 0.04)  +
+  draw_plot(a, 0.24, 0.26, 0.1, 0.04)  + 
+
+   draw_plot(a, 0, .56, 0.33, 0.22) +
+  draw_plot(b, .04, 0.52, 0.1, 0.04) +
+  draw_plot(c, 0.14, 0.52, 0.1, 0.04)  +
+  draw_plot(d, 0.24, 0.52, 0.1, 0.04)  + 
+
+draw_plot(a, 0, .56, 0.33, 0.22) +
+  draw_plot(b, .04, 0.78, 0.1, 0.04) +
+  draw_plot(c, 0.14, 0.78, 0.1, 0.04)  +
+  draw_plot(d, 0.24, 0.78, 0.1, 0.04)  
+
+dev.off()
+.```
+
+You can also embed plots, for example:
+
+```{r fig.width=7, fig.height=6}
+plot(cars)
+```
+
