@@ -1,0 +1,344 @@
+Sorghum miniheat maps
+===================================
+
+
+TISSUE Functions
+==================
+
+
+
+```{r}
+
+genebody_pval = function(file_name)
+{
+  
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+  genebody = x[which(x$pos >= 0 & x$pos <= 1000),]
+  d = kruskal.test(freq ~ mtype, data = genebody) 
+
+  c <- posthoc.kruskal.nemenyi.test(freq ~ mtype, data=genebody, dist="Tukey")
+  y <- data.frame(c$p.value)
+  y$vascular[1] = y$shoot[2]
+  ttype  <- c("shoot","vascular","nonvascular","shoot","vascular","nonvascular","shoot","vascular","nonvascular")
+
+
+  z <- cbind.data.frame(melt(y),ttype)
+  z$pval <- cut(z$value, breaks = c(-1, 0.0001, 0.001, 0.01, 1))
+  z$ttype <- factor(z$ttype, levels = c("nonvascular","","vascular","shoot"))
+  g = ggplot(z, aes(variable, ttype, fill = pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(-1,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(legend.position ="none",axis.text.x=element_blank(),axis.text.y=element_blank(),text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+  return(g)
+  }
+```
+
+```{r}
+
+upstream_pval = function(file_name)
+{
+  
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+  up = x[which(x$pos < 0),]
+  d = kruskal.test(freq ~ mtype, data = up)
+
+  c <- posthoc.kruskal.nemenyi.test(freq ~ mtype, data=up, dist="Tukey")
+  y <- data.frame(c$p.value)
+  y$vascular[1] = y$shoot[2]
+  ttype  <- c("shoot","vascular","nonvascular","shoot","vascular","nonvascular","shoot","vascular","nonvascular")
+
+
+  z <- cbind.data.frame(melt(y),ttype)
+  z$pval <- cut(z$value, breaks = c(-1, 0.0001, 0.001, 0.01, 1))
+  z$ttype <- factor(z$ttype, levels = c("nonvascular","","vascular","shoot"))
+  g= ggplot(z, aes(variable, ttype, fill = pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(-1,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(legend.position ="none", axis.text.x=element_blank(),axis.text.y=element_blank(), text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+  return(g)
+  }
+
+```
+
+```{r}
+
+
+downstream_pval  = function(file_name)
+{
+  
+  x = read.table(file_name, col.names=c("pos","freq","mtype"))
+  x$mtype <- tolower(x$mtype)
+  x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+  down = x[which(x$pos > 1000),]
+  d = kruskal.test(freq ~ mtype, data = down) 
+
+  c <- posthoc.kruskal.nemenyi.test(freq ~ mtype, data=down, dist="Tukey")
+  y <- data.frame(c$p.value)
+  y$vascular[1] = y$shoot[2]
+  ttype  <- c("shoot","vascular","nonvascular","shoot","vascular","nonvascular","shoot","vascular","nonvascular")
+
+  
+  z <- cbind.data.frame(melt(y),ttype)
+  z$pval <- cut(z$value, breaks = c(-1, 0.0001, 0.001, 0.01, 1))
+  z$ttype <- factor(z$ttype, levels = c("nonvascular","","vascular","shoot"))
+  g= ggplot(z, aes(variable, ttype, fill = pval)) + geom_tile(colour = "black") + scale_fill_brewer(palette = "Blues",direction=-1, limits=c("(-1,0.0001]","(0.0001,0.01]","(0.001,0.01]")) + theme_classic() + theme(legend.position ="none", axis.text.x=element_blank(),axis.text.y=element_blank(),text=element_text(size=20))    +  
+    theme(text=element_text(size=12), panel.margin = unit(0, "cm"), 
+          plot.margin = unit(c(0, 0, 0.01, 0), "cm"),axis.ticks = element_line(size = 0.1), 
+          axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + 
+    xlab(NULL) + ylab(NULL) 
+  return(g)
+  }
+
+```
+
+## CG
+
+### RPKM1
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_1.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm1_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm1_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm1_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+
+### RPKM2
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_2.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm2_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm2_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm2_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+### RPKM3
+
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_3.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm3_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm3_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm3_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+### RPKM4
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CG_all_4.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm4_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm4_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/cg_rpkm4_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+
+
+## CHG
+
+### RPKM1
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_1.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm1_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm1_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm1_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+
+### RPKM2
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_2.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm2_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm2_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm2_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+### RPKM3
+
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_3.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm3_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm3_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm3_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+### RPKM4
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHG_all_4.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm4_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm4_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chg_rpkm4_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+## CHH
+
+### RPKM1
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_1.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm1_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm1_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm1_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+
+### RPKM2
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_2.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm2_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm2_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm2_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+### RPKM3
+
+
+```{r}
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_3.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm3_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm3_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm3_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```
+
+### RPKM4
+
+```{r}
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/tissue/Tissue/CHH_all_4.txt" 
+
+uoutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm4_upstream.pdf"
+goutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm4_genebody.pdf"
+doutput_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/heatmap/tissue/chh_rpkm4_downstream.pdf"
+
+upstream_pval(file_name)
+ggsave(uoutput_name, width=1.8, height=1.5, dpi=600, units="cm") 
+
+genebody_pval(file_name)
+ggsave(goutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+
+downstream_pval(file_name)
+ggsave(doutput_name, width=1.8, height=1.5, dpi=600, units="cm")
+```

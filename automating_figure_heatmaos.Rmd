@@ -109,6 +109,7 @@ h2= genebody_pval(file_name)
 h3= downstream_pval(file_name)
 
 
+
 file_name = "/Users/gturco/Documents/Data/Sorg/TSS/rpkm_new/all.shoot.CHH.filtered.txt"
 x = read.table(file_name, col.names=c("pos","freq","mtype"))
 x$mtype <- factor(x$mtype, levels = c("1","2","3","4"))
@@ -299,44 +300,78 @@ l3= downstream_pval(file_name)
 ```
 
 
+```{r}
 
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/new/tissue/all/CG_tissue.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+
+cg = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) 
+
+cg1= upstream_pval(file_name)
+cg2= genebody_pval(file_name)
+cg3= downstream_pval(file_name)
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/new/tissue/all/CHG_tissue.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+chg = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8"))
+
+chg1= upstream_pval(file_name)
+chg2= genebody_pval(file_name)
+chg3= downstream_pval(file_name)
+
+
+file_name = "/Users/gturco/Documents/Data/Sorg/TSS/new/tissue/all/CHH_tissue.txt"
+x = read.table(file_name, col.names=c("pos","freq","mtype"))
+x$mtype <- factor(x$mtype, levels = c("root","shoot","vascular","nonvascular"))
+
+chh = ggplot(data=x, aes(x = pos, y = freq * 100 ,group=mtype, color = mtype)) +  geom_line(size = .3) +
+  theme_classic() + theme(text=element_text(size=20))    +  theme(legend.position ="none", text=element_text(size=7), panel.margin = unit(0, "cm"), plot.margin = unit(c(0, 0, 0.01, -0.1), "cm"),axis.ticks = element_line(size = 0.1), axis.line = element_line(size = 0.1), axis.ticks.length = unit(0.05, "cm"), axis.ticks.margin =unit(0, "cm")) + xlab(NULL) + ylab("") + scale_colour_manual(values=c("#c6141c","#fccb0c","#009987","#3261a8")) 
+
+chh1= upstream_pval(file_name)
+chh2= genebody_pval(file_name)
+chh3= downstream_pval(file_name)
+
+
+```
 
 
 
 ```{r}
 library(cowplot)
 
-pdf("Fig5gridupdate.pdf", width=6.8136, height=10.85568, onefile=FALSE)
+pdf("Figure5b.pdf", width=6.8136, height=10.85568, onefile=FALSE)
 ggdraw() +
   ###x,y,w,h
-  draw_plot(d, 0, 0.068, 0.323, 0.125) +
-  draw_plot(d1, .033, 0, .098, 0.057) +
-  draw_plot(d2, 0.132, 0, .098, 0.057)  +
-  draw_plot(d3, 0.231, 0, .098, 0.057) +
-  draw_plot(d3, 0.231, 0, .098, 0.057) +
+   draw_plot(cg, 0, 0.068, 0.323, 0.125) +
+  draw_plot(cg1, .033, 0, .098, 0.057) +
+  draw_plot(cg2, 0.132, 0, .098, 0.057)  +
+  draw_plot(cg3, 0.231, 0, .098, 0.057) +
+
   #C
-  draw_plot(c, 0, 0.315, 0.323, 0.125) +
-  draw_plot(c1, .033, 0.247, .098, 0.057) +
-  draw_plot(c2, 0.132, 0.247, .098, 0.057)  +
-  draw_plot(c3, 0.231, 0.247, .098, 0.057) +
+   draw_plot(chg, 0.329, 0.068, 0.33, 0.125) +
+  draw_plot(chg1, .362, 0, .098, 0.057) +
+  draw_plot(chg2, 0.46, 0, .098, 0.057)  +
+  draw_plot(chg3, 0.558, 0, .098, 0.057) +
   
   #B
-  draw_plot(b, 0, 0.562, 0.323, 0.125) +
-  draw_plot(b1, .033, 0.494, .098, 0.057) +
-  draw_plot(b2, 0.132, 0.494, .098, 0.057)  +
-  draw_plot(b3, 0.231, 0.494, .098, 0.057) +
-  #A
-    draw_plot(a, 0, 0.809, 0.323, 0.125) +
-  draw_plot(a1, .033, 0.741, .098, 0.057) +
-  draw_plot(a2, 0.132, 0.741, .098, 0.057)  +
-  draw_plot(a3, 0.231, 0.741, .098, 0.057)
+   draw_plot(chh, 0.656, 0.068, 0.33, 0.125) +
+  draw_plot(chh1, 0.689, 0, .098, 0.057) +
+  draw_plot(chh2, 0.787, 0, .098, 0.057)  +
+  draw_plot(chh3, 0.885, 0, .098, 0.057) 
+
 
 dev.off()
 
 
 
 ##### PERFECT FIGURE HORIZONTAL
-pdf("SU_spacing.pdf", width=6.8136, height=10.85568, onefile=FALSE)
+pdf("Figure_S4_kk.pdf", width=6.8136, height=10.85568, onefile=FALSE)
 ggdraw() +
   ###x(w),y(h),w,h
   #### VERTICAL 1
